@@ -31,6 +31,7 @@ io.on('connection', (socket) => {
       io.emit('updatePlayers',players)
   })
   console.log(players);
+  
 });
 
 server.listen(port, () => {
