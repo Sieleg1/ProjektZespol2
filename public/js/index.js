@@ -62,7 +62,6 @@ socket.on('updatePlayers', (backendPlayers) => {
   }
 
   console.log(players)
-  
 })
 
 let animationId
