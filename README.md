@@ -13,5 +13,6 @@
 
 To Launch the application:
 
-A. Double click the `index.html` to open the starter project.
-B. Open the terminal and enter `node app.js` and the application should start up on the chosen port in app.js (Default is 3000).
+A. Open the terminal and enter `node app.js` and the application should start up on the chosen port in app.js (Default is 3000).
+
+B.Open the terminal and enter `node backend.js` (port 3000)
