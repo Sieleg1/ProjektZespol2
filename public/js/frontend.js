@@ -50,7 +50,7 @@ socket.on('updatePlayers', (backendPlayers) => {
     const backendPlayer = backendPlayers[id]
 
     if(!frontEndPlayers[id]) {
-      frontEndPlayers[id] = new Player({x:backendPlayer.x, y:backendPlayer.y, radius:10, color:'hsl(0, 100%, 50%)'})
+      frontEndPlayers[id] = new Player({x:backendPlayer.x, y:backendPlayer.y, radius:10, color:backendPlayer.color})
     }
   }
 
