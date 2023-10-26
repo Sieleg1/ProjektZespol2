@@ -13,7 +13,15 @@ const x = canvas.width / 2
 const y = canvas.height / 2
 
 const frontEndPlayers = {} //frontend player
+const frontEndProjectiles = {} 
 
+socket.on("connect",()=>{
+  socket.emit('initCanvas',{
+    width: canvas.width, 
+    height: canvas.height,
+    devicePixelRatio
+  })
+})
 // const projectiles = []
 // const enemies = []
 // const particles = []
@@ -46,12 +54,39 @@ const frontEndPlayers = {} //frontend player
 //   }, 1000)
 // }
 
+socket.on('updateProjectiles', (backendProjectiles) => {
+  for (const id in backendProjectiles){
+    const backEndProjectile = backendProjectiles[id]
+
+    if (!frontEndProjectiles[id]){
+      frontEndProjectiles[id] = new Projectile({
+                x:backEndProjectile.x, 
+                y:backEndProjectile.y, 
+                radius:5, 
+                color:frontEndPlayers[backEndProjectile.playerId]?.color, 
+                velocity: backEndProjectile.velocity
+            })
+    } else {
+      frontEndProjectiles[id].x += backendProjectiles[id].velocity.x
+      frontEndProjectiles[id].y += backendProjectiles[id].velocity.y
+    }
+  }
+  for(const frontEndProjectileId in frontEndProjectiles){
+    if(!backendProjectiles[frontEndProjectileId]) {
+      delete frontEndProjectiles[frontEndProjectileId]
+    }
+  }
+})
 socket.on('updatePlayers', (backendPlayers) => {
   for(const id in backendPlayers){
     const backendPlayer = backendPlayers[id]
 
     if(!frontEndPlayers[id]) {
-      frontEndPlayers[id] = new Player({x:backendPlayer.x, y:backendPlayer.y, radius:10, color:backendPlayer.color})
+      frontEndPlayers[id] = new Player({
+        x:backendPlayer.x, 
+        y:backendPlayer.y, 
+        radius:10, 
+        color:backendPlayer.color})
     } else {
 
       if (id === socket.id) {
@@ -89,8 +124,6 @@ socket.on('updatePlayers', (backendPlayers) => {
       delete frontEndPlayers[id]
     }
   }
-
-  
 })
 
 let animationId
@@ -102,9 +135,18 @@ function animate() {
 
   for(const id in frontEndPlayers){
     const player = frontEndPlayers[id]
-
     player.draw()
   }
+  for(const id in frontEndProjectiles){
+    const frontEndProjectile = frontEndProjectiles[id]
+    frontEndProjectile.draw()
+  }
+
+  // for (let i = frontEndProjectiles.length - 1; i >= 0; i--){
+  //   const frontEndProjectile = frontEndProjectiles[i]
+  //   frontEndProjectile.update()
+  // }
+
   // player.draw()
 
   // for (let index = particles.length - 1; index >= 0; index--) {
