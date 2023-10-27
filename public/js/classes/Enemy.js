@@ -20,3 +20,5 @@ class Enemy {
     this.y = this.y + this.velocity.y
   }
 }
+
+//first commit Marek Sokołowski
