@@ -22,3 +22,4 @@ class Enemy {
 }
 
 //first commit Marek Sokołowski
+//first commit Jan Zagórski
